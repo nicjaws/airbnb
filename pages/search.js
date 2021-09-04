@@ -58,6 +58,9 @@ function Search({ searchResults }) {
             )}
           </div>
         </section>
+        <section className="">
+          <Map />
+        </section>
       </main>
       <Footer />
     </>
