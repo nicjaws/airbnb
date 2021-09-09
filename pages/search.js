@@ -8,16 +8,16 @@ import { format } from 'date-fns';
 function Search({ searchResults }) {
   const router = useRouter();
 
+
   const { location, startDate, endDate, noOfGuests } = router.query;
+  const formatedStartDate = format(new Date(startDate), "dd MMMM yy");
+  const formatedEndDate = format(new Date(endDate), "dd MMMM yy");
+  const range = ` ${formatedStartDate} - ${formatedEndDate}`;
 
-  const formattedStartDate = format(new Date(startDate), "MM-dd-yyyy");
-  const formattedEndDate = format(new Date(endDate), "MM-dd-yyyy");
-  const range = `${formattedStartDate} - ${formattedEndDate}`;
-
-  const placeholder = `${router.query.location} | ${format(
-    new Date(router.query.checkIn),
-    "mm-dd-yyyy"
-  )} | ${format(new Date(router.query.checkIn), "mm-dd-yyyy")} | ${
+  const placeholder = `${router.query.location} |
+  ${format(new Date(router.query.checkIn), "dd MMMM yy")} |
+  ${format(new Date(router.query.checkIn), "dd MMMM yy")} |
+  ${
     router.query.guests
   } guests`;
 
@@ -59,7 +59,7 @@ function Search({ searchResults }) {
           </div>
         </section>
         <section className="">
-          <Map />
+          <Map searchResults={ searchResults } />
         </section>
       </main>
       <Footer />
@@ -71,11 +71,12 @@ export default Search;
 
 export async function getServerSideProps() {
   const searchResults = await fetch("https://links.papareact.com/isz")
-  .then(res => res.json());
+  .then(res => res.json()
+  );
 
   return {
     props: {
-      searchResults
+      searchResults,
     }
-  }
+  };
 }
